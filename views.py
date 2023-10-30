@@ -1,39 +1,62 @@
+# Create your views here.
+
+'''class UserRegistrationView(View):
+    template_name = 'users/registration.html'
+
+    def get(self, request):
+        form = UserCreationForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user_profile = user.userprofile
+            user_profile.role = 'user'
+            user_profile.save()
+            login(request, user)
+            return redirect('product_selection')
+        return render(request, self.template_name, {'form': form})
+'''
+
+from django.contrib.auth import login, authenticate
+from django.shortcuts import redirect
+from django.views import View
+
+
+class UserLoginView(View):
+    template_name = 'users/login.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('product_selection')
+        return render(request, self.template_name, {'error_message': 'Invalid login credentials'})
+
 
 from django.http import HttpResponse
 from django.shortcuts import render
-
-# Create your views here.
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
-from django.views import View
-
-from products.models import Product
-from technicians import forms
-from technicians.models import Technician
+from . import forms
 
 
-class TechnicianAssignmentView(View):
-    template_name = 'technicians/assignment.html'
-
-    def get(self, request):
-        product = Product.objects.all()
-        # Query available technicians and display them for assignment
-        technicians = Technician.objects.all()
-        return render(request, self.template_name, {'product': product, 'technicians': technicians})
-
-
-def TechnicianRegistrationView(request):
+def UserRegistrationView(request):
     if request.method == 'GET':
-        form = forms.TechnicianCreationForm(request.GET)
+        form = forms.UserCreationForm(request.GET)
 
         if form.is_valid():
             form.save()
 
-            return HttpResponse("technician Created Successfully")
+            return HttpResponse("User Created Successfully")
 
     else:
-        form = forms.TechnicianCreationForm()
+        form = forms.UserCreationForm()
 
-    return render(request, 'technicians/tech_registration.html', {
+    return render(request, 'users/registration.html', {
         'form': form
     })
