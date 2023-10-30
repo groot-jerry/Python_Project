@@ -1,13 +1,13 @@
 
 from django import forms
 
-from technicians.models import Technician
+from users.models import UserProfile
 
 
-class TechnicianCreationForm(forms.ModelForm):
+class UserCreationForm(forms.ModelForm):
     class Meta:
-        model = Technician
+        model = UserProfile
         fields = [
             'user',
-            'skills',
+            'role',
         ]

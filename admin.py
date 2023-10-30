@@ -2,6 +2,6 @@ from django.contrib import admin
 
 # Register your models here.
 
-from technicians.models import Technician
+from users.models import UserProfile
 
-admin.site.register(Technician)
+admin.site.register(UserProfile)

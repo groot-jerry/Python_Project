@@ -1,9 +1,11 @@
-from django.urls import path
-from .views import TechnicianAssignmentView, TechnicianRegistrationView
 
+
+from django.urls import path
+
+from .views import UserRegistrationView, UserLoginView
 
 urlpatterns = [
-    path('register/', TechnicianRegistrationView, name='register_technician'),
-    path('technicians/', TechnicianAssignmentView.as_view(), name='assign_technician')
-    # Add other technician-related URLs as needed
+    path('register/', UserRegistrationView, name='user_registration'),
+    path('login/', UserLoginView.as_view(), name='user_login'),
+    # Add other user-related URLs as needed
 ]
